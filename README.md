@@ -1,5 +1,5 @@
 # rtd_conversion
-We're using a **PT-1000 RTD** (resistance temperature detector) to measure the cold junction temperature of a thermocouple. This is to provide the reference temperature needed to calcualte the measured temperature of the thermocouples. All data is being recorded in the [PicoLog ADC 20/24](https://www.picotech.com/data-logger/adc-20-adc-24/precision-data-acquisition) datalogger.
+We're using a **PT-1000 RTD** (resistance temperature detector) to measure the cold junction temperature of a thermocouple. This is to provide the reference temperature needed to calculate the measured temperature of the thermocouples. All data is being recorded in the [PicoLog ADC 20/24](https://www.picotech.com/data-logger/adc-20-adc-24/precision-data-acquisition) datalogger.
 
 The **RTD's resistance changes with temperature**. We implemented a simple voltage divider circuit. By measuring the voltage drop (with the datalogger), we can calculate the resistance by Ohm's Law (V = iR). See schematic for details.
 
