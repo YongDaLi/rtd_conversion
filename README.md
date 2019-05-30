@@ -1,5 +1,15 @@
 # rtd_conversion
-Using RTD to measure cold junction temperature of data loggger on rooftop experiment.
-Implemented simple voltage divider circuit with 2V5 input (from PicoLog breakout). See schematic for details.
+We're using a **PT-1000 RTD** (resistance temperature detector) to measure the cold junction temperature of a thermocouple. This is to provide the reference temperature needed to calcualte the measured temperatuer of the thermcouples.
 
-This program converts .csv with measured ADC voltages from RTD to temperature.
+The RTD's resistance changes with temperature. We implemented a simple voltage divider circuit. By measuring the voltage drop, we can calculate the resistance by Ohm's Law (V = iR). See schematic for details.
+
+This program takes in a .csv file containing the measured voltage drops across the RTD. It adds another column to the .csv file with the corresponding temperature. The input file format is `{'measured_voltage'}` and the output file format is `{'measured_voltage', 'temp'}`.
+
+## Some Notes
+- PT-1000 means a platnium RTD such that R = 1000Ω at 0°C
+- i = V_2.5 / (R_100K + R_rtd)
+- R_rtd varies from about 1060-1130Ω (15-33°C), but since the R_100K is so much bigger, the current can be assumed to be constant
+- i_measured is around 27uA
+
+## About the Project
+I'm on a 12 week summer research exchange at the National University of Singapore (NUS). I'm working with the the [Nanomaterials and Nanosystems Innovation](http://www.hoghimwei.com/) research group. Our goal is to develop a solar reflective glass coating that can be used for ambient cooling. We are in the final testing stage. There are 2 glass houses sitting on the rooftop of the engineering buildings. One made from coated glass panels and another from regular glass panels. We are measuring the power consumption of air conditioning units placed inside the house, set to keep the room at 25°C. The coating is 5 layers of TiO2 and Ag which reflect IR radiation. We expect to see the coated glass house experience less heating from the sun and thus less energy consumption of the AC units.
