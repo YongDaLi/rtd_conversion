@@ -52,7 +52,7 @@ def voltage_to_temp(v_measured):
     res = (r_100K*v_measured) / (v_supply - v_measured)
     temp = res_to_temp(res)
 
-    print("res:", round(res, 4), "\ttemp:", round(temp, 4), "\tvolt:", v_measured)
+    print("volt:", v_measured, "\tres:", round(res, 4), "\ttemp:", round(temp, 4))
 
     return temp
 
@@ -62,7 +62,7 @@ def temp_to_voltage(temp):
     res = temp_to_res(temp)
     volt = v_supply * res /(res + r_100K)
 
-    print("res:", round(res, 4), "\ttemp:", round(temp, 4), "\tvolt:", v_measured)
+    print("temp:", round(temp, 4), "\tres:", round(res, 4), "\tvolt:", volt)
 
     return volt
 
@@ -130,13 +130,14 @@ def convert_csv():
 
     # write output file
     with open("output/" + output_file, 'w', newline='') as out_csv:
-        fieldnames = ['measured_voltage', 'temp']
+        fieldnames = ['measured_voltage', 'R_rtd', 'temp']
         writer = csv.DictWriter(out_csv, fieldnames = fieldnames)
         writer.writeheader()
 
         for i in range (0, line_count):
             temp = voltage_to_temp(measured_voltage[i]);
-            writer.writerow({'measured_voltage': measured_voltage[i], 'temp': temp})
+            res = temp_to_res(temp)
+            writer.writerow({'measured_voltage': measured_voltage[i], 'R_rtd': res, 'temp': temp})
 
     print("Conversion finished, converted " + str(line_count) + " lines to output file: " + output_file)
 
