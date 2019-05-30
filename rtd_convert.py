@@ -18,6 +18,8 @@ c = -4.183E-12
 
 # since PT1000, assume R = 1000Ω at 0°C
 r0 = 1000
+r_100K = 89.6e3
+v_supply = 2.50 
 
 # measured current is 23uA, by i = V / (R_100K + R_rtd)
 i_measured = 27e-6
@@ -46,10 +48,11 @@ def res_to_temp(res):
 
 
 # converts voltage drop across RTD to temperature
-def voltage_to_temp(volt):
-    res = (volt) / i_measured
-    print("res: ", res)
+def voltage_to_temp(v_measured):
+    res = (r_100K*v_measured) / (v_supply - v_measured)
     temp = res_to_temp(res)
+
+    print("res:", round(res, 4), "\ttemp:", round(temp, 4), "\tvolt:", v_measured)
 
     return temp
 
@@ -57,8 +60,9 @@ def voltage_to_temp(volt):
 # converts temperature to expected voltage drop across RTD
 def temp_to_voltage(temp):
     res = temp_to_res(temp)
-    print("res: ", res)
-    volt = res * i_measured
+    volt = v_supply * res /(res + r_100K)
+
+    print("res:", round(res, 4), "\ttemp:", round(temp, 4), "\tvolt:", v_measured)
 
     return volt
 
@@ -122,7 +126,7 @@ def convert_csv():
             measured_voltage.append(float(row['measured_voltage']))
             line_count = line_count + 1
 
-    print("\nProcessed " + str(line_count) + " lines in file: " + input_file)
+    print("\nRead " + str(line_count) + " lines in file: " + input_file)
 
     # write output file
     with open("output/" + output_file, 'w', newline='') as out_csv:
@@ -134,7 +138,7 @@ def convert_csv():
             temp = voltage_to_temp(measured_voltage[i]);
             writer.writerow({'measured_voltage': measured_voltage[i], 'temp': temp})
 
-    print("Conversion finished, output file: " + output_file)
+    print("Conversion finished, converted " + str(line_count) + " lines to output file: " + output_file)
 
 
 def main():
