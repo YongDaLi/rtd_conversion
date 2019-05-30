@@ -142,6 +142,25 @@ def convert_csv():
     print("Conversion finished, converted " + str(line_count) + " lines to output file: " + output_file)
 
 
+def view_constants():
+    text = '''
+    # coefficients from standard ITS 90
+    a = 3.90830E-03
+    b = -5.775E-07
+    c = -4.183E-12
+
+    # since PT1000, assume R = 1000Ω at 0°C
+    r0 = 1000
+    r_100K = 89.6e3
+    v_supply = 2.50 
+
+    # measured current is 23uA, by i = V / (R_100K + R_rtd)
+    i_measured = 27e-6
+    '''
+
+    print(text)
+
+
 def main():
     print("\n--- PT1000 Resistance Temperature Detector ---")
     print("- calibrated for PicoLog voltage divider circuit")
@@ -152,7 +171,8 @@ def main():
         print("   (main menu)")
         print("0. quit")
         print("1. command line")
-        print("2. csv\n")
+        print("2. csv")
+        print("3. view constants\n")
         choice = int(input("Enter choice: "))
 
         if choice == 0:
@@ -161,6 +181,8 @@ def main():
             convert_cli()
         elif choice == 2:
             convert_csv()
+        elif choice == 3:
+            view_constants()
 
         print("-" * 20)
 
